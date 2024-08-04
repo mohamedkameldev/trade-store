@@ -1,23 +1,16 @@
 @extends('layouts.dashboard')
 
-@push('styles')
+{{-- @push('styles')
 <link rel="stylesheet" href="{{asset('dist/css/adminlte2.min.css')}}">
-@endpush
+@endpush --}}
 
-@push('styles')
+{{-- @push('styles')
 <link rel="stylesheet" href="{{asset('dist/css/adminlte3.min.css')}}">
-{{--will not override the previous one--}}
-@endpush
+{{--will not override the previous one
+@endpush --}}
 
 
-@section('title', 'Index') {{-- Simple value --}}
-{{-- if you don't use html in the content, add it as a second parameter (to avoid writing endsection directive) --}}
-
-@section('breadcrumb')
-@parent {{-- to inheret parent section in addition to this section (if you don't write it, this will override parent's
-section--}}
-<li class="breadcrumb-item active">@yield('title')</li>
-@endsection
+@section('title', 'Starter Page')
 
 @section('content')
 

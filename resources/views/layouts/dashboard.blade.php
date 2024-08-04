@@ -8,7 +8,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app')['name'] }}</title>
+    <title>Dashboard - @yield('title', 'Page') </title>
+    {{-- <title>{{ config('app')['name'] }} - @yield('title', 'Page') </title> --}}
     {{-- <title>{{ config('app.name') }}</title> --}}
     <link rel="icon" href={{asset('dist/img/icon.png')}} type="image/x-icon">
     <!-- Google Font: Source Sans Pro -->
@@ -43,7 +44,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 @section('breadcrumb')
-                                <li class="breadcrumb-item"><a href="{{ url('dashboard') }}">Home</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                                 @show
                             </ol>
                         </div><!-- /.col -->
