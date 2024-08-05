@@ -38,13 +38,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
+                            @yield('button')
+                        </div><!-- /.col -->
+                        <div class="col-sm-4">
                             <h1 class="m-0">@yield('title', 'Page')</h1> {{-- default value for this section--}}
                         </div><!-- /.col -->
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <ol class="breadcrumb float-sm-right">
                                 @section('breadcrumb')
-                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Index</a></li>
                                 @show
                             </ol>
                         </div><!-- /.col -->

@@ -10,7 +10,7 @@
 @endpush --}}
 
 
-@section('title', 'Starter Page')
+@section('title', 'Index')
 
 @section('content')
 
