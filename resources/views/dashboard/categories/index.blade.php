@@ -6,12 +6,12 @@
 @section('breadcrumb')
 @parent {{-- to inheret parent section in addition to this section (if you don't write it, this will override parent's
 section--}}
-<li class="breadcrumb-item active"><a href="{{ route('categories.index') }}">@yield('title')</a></li>
+<li class="breadcrumb-item active"><a href="{{ route('dashboard.categories.index') }}">@yield('title')</a></li>
 @endsection
 
 
 @section('button')
-<a href="{{ route('categories.create') }}" class="btn btn-small btn-primary">New Category</a>
+<a href="{{ route('dashboard.categories.create') }}" class="btn btn-small btn-primary">New Category</a>
 @endsection
 
 
@@ -20,6 +20,18 @@ section--}}
 @session('created')
 <div class="alert alert-success" role="alert" style=" text-align: center">
     {{ session('created') }}
+</div>
+@endsession
+
+@session('updated')
+<div class="alert alert-info" role="alert" style=" text-align: center">
+    {{ session('updated') }}
+</div>
+@endsession
+
+@session('deleted')
+<div class="alert alert-danger" role="alert" style=" text-align: center">
+    {{ session('deleted') }}
 </div>
 @endsession
 
@@ -40,11 +52,16 @@ section--}}
         <tr>
             <td>{{ $category->id }}</td>
             <td>{{ $category->name }}</td>
-            <td>{{ $category->parent_id }}</td>
+            <td>{{ !is_null($category->parent_id)
+                ? DB::table('categories')->where('id', $category->parent_id)->first()->name
+                : '' }}
+            </td>
             <td>{{ $category->created_at }}</td>
             <td>
-                <a href="{{ route('categories.edit', 1) }}" class="btn btn-small btn-warning mr-2">Edit</a>
-                <form action="{{ route('categories.destroy', $category->id) }} }}" method="post" style="display:inline">
+                <a href="{{ route('dashboard.categories.edit', $category->id) }}"
+                    class="btn btn-small btn-warning mr-2">Edit</a>
+                <form action="{{ route('dashboard.categories.destroy', $category->id) }} }}" method="post"
+                    style="display:inline">
                     @csrf
                     @method('delete')
                     <input type="submit" value="Delete" class="btn btn-small btn-danger">
@@ -55,7 +72,8 @@ section--}}
         <tr>
             <td colspan="5">
                 <div class="alert alert-secondary" role="alert">
-                    There are no Categories yet, <a href="{{ route('categories.create') }}">Add a new Category</a>
+                    There are no Categories yet, <a href="{{ route('dashboard.categories.create') }}">Add a new
+                        Category</a>
                 </div>
             </td>
         </tr>
