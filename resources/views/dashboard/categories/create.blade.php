@@ -11,7 +11,7 @@
 
 
 @section('content')
-<form method="post" action="{{ route('dashboard.categories.store') }}">
+<form method="post" action="{{ route('dashboard.categories.store') }}" enctype="multipart/form-data">
     @csrf
 
     @include('dashboard.categories._form')

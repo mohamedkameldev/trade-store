@@ -38,23 +38,40 @@ section--}}
 <table class="table table-bordered" style=" text-align: center; background-color: white">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>Image</th>
             <th>Name</th>
+            <th>Discription</th>
             <th>Parent</th>
+            <th>Status</th>
             <th>Created at</th>
             <th colspan="2">Actions</th>
-            {{-- <th></th> --}}
         </tr>
     </thead>
 
     <tbody>
         @forelse ($categories as $category)
         <tr>
-            <td>{{ $category->id }}</td>
+            <td>
+                @if(is_null($category->image))
+                <img src="{{asset('dist\img\placeholder.png')}}" alt="image" width="100" height="auto">
+                @else
+                <img src="{{asset('storage/' . $category->image)}}" alt="image" width="100" height="auto">
+                @endif
+
+            </td>
             <td>{{ $category->name }}</td>
+            <td>{{ Str::substrReplace($category->description, '....', 25) }}</td>
             <td>{{ !is_null($category->parent_id)
                 ? DB::table('categories')->where('id', $category->parent_id)->first()->name
                 : '' }}
+            </td>
+            <td>
+                @if ($category->status == 'active')
+                <p class="text-success"> Active </p>
+                @else
+                <p class="text-black-50"> Archived </p>
+
+                @endif
             </td>
             <td>{{ $category->created_at }}</td>
             <td>
@@ -70,7 +87,7 @@ section--}}
         </tr>
         @empty
         <tr>
-            <td colspan="5">
+            <td colspan="8">
                 <div class="alert alert-secondary" role="alert">
                     There are no Categories yet, <a href="{{ route('dashboard.categories.create') }}">Add a new
                         Category</a>

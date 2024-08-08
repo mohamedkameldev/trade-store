@@ -24,10 +24,15 @@ so, we put the _ before it's name --}}
     </div>
 
     <div class="form-group">
-        <label for="parent">Image</label>
+        <div class="d-flex image-label-container">
+            <label for="image">Image</label>
+            @if ($category->image)
+            <img class="ml-4 mb-2" src="{{asset('storage/' . $category->image)}}" alt="image" width="100" height="auto">
+            @endif
+        </div>
         <div class="custom-file">
-            <input type="file" class="custom-file-input" name="image" id="image">
-            <label class="custom-file-label" for="image">Choose file</label>
+            <input type="file" class="custom-file-input" name="image" id="image" accept="image/*">
+            <label class="custom-file-label" for="image">{{$category->image ?? 'Choose file' }}</label>
         </div>
     </div>
 
@@ -48,6 +53,6 @@ so, we put the _ before it's name --}}
     </div>
 
     <div class="form-group btn-lg btn-block" style="display: flex; justify-content: flex-end;">
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary">{{ $button_label ?? 'Save' }}</button>
     </div>
 </div>
