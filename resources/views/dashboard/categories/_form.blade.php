@@ -4,23 +4,35 @@ so, we put the _ before it's name --}}
 <div>
     <div class="form-group">
         <label for="name">Category Name</label>
-        <input type="text" class="form-control" id="name" name="name" value="{{ $category->name }}">
+        <input type="text" @class(['form-control', 'is-invalid'=> $errors->has('name')])
+        name="name" value="{{ old('name', $category->name )}}" id="name">
+        @error('name')
+        <div class="invalid-feedback"> {{$message}} </div>
+        @enderror
     </div>
+
 
     <div class="form-group">
         <label for="description">Description</label>
-        <textarea class="form-control" id="description" rows="2" name="description">{{ $category->name }}</textarea>
+        <textarea name="description" @class(['form-control', 'is-invalid'=> $errors->has('description') ]) id="description" rows="2">{{ old('description', $category->description )}}
+        </textarea>
+        @error('description')
+        <div class="invalid-feedback"> {{ $message }} </div>
+        @enderror
     </div>
 
     <div class="form-group">
         <label for="parent">Category Parent</label>
-        <select name="parent_id" class="custom-select">
-            <option {{ $category->parent_id ?? 'selected' }} value="">Primary Category</option>
+        <select name="parent_id" @class(['form-control', 'is-invalid'=> $errors->has('parent_id') ])>
+            <option {{ old('parent_id', $category->parent_id ) ?? 'selected' }} value="">Primary Category</option>
             @foreach ($parents as $parent)
-            <option value="{{$parent->id}}" @selected($category->parent_id == $parent->id)>
+            <option value="{{$parent->id}}" @selected(old('parent_id', $category->parent_id ) == $parent->id)>
                 {{$parent->name}} </option>
             @endforeach
         </select>
+        @error('parent_id')
+        <div class="invalid-feedback"> {{ $message }} </div>
+        @enderror
     </div>
 
     <div class="form-group">
@@ -31,8 +43,12 @@ so, we put the _ before it's name --}}
             @endif
         </div>
         <div class="custom-file">
-            <input type="file" class="custom-file-input" name="image" id="image" accept="image/*">
-            <label class="custom-file-label" for="image">{{$category->image ?? 'Choose file' }}</label>
+            <input type="file" @class(['custom-file-input', 'is-invalid'=> $errors->has('image') ])
+            name="image" id="image" accept="image/*">
+            <label class="custom-file-label" for="image"> {{old('image', $category->image) ?? 'Choose file' }} </label>
+            @error('image')
+            <div class="invalid-feedback"> {{ $message }} </div>
+            @enderror
         </div>
     </div>
 
@@ -40,15 +56,20 @@ so, we put the _ before it's name --}}
         <label for="parent">Status</label>
         <div class="form-check">
             <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="active" name="status" class="custom-control-input" value="active"
-                    @checked($category->status == 'active')>
+                <input type="radio" id="active" name="status" value=" active"
+                    @class(['custom-control-input', 'is-invalid'=> $errors->has('status') ])
+                @checked(old('status', $category->status) == 'active' ) >
                 <label class="custom-control-label" for="active">Active</label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="archived" name="status" class="custom-control-input" value="archived"
-                    @checked($category->status == 'archived')>
+                <input type="radio" id="archived" name="status" value=" archived"
+                    @class(['custom-control-input', 'is-invalid'=> $errors->has('status') ])
+                @checked(old('status', $category->status) == 'archived' ) >
                 <label class="custom-control-label" for="archived">Archived</label>
             </div>
+            @error('status')
+            <small class="text-danger"> {{ $message }} </small>
+            @enderror
         </div>
     </div>
 

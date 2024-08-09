@@ -26,6 +26,14 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
+        $validated_data =  $request->validate(Category::rules(), [
+            'required' => ':attribute is required',     // for all attributes
+            'max' => ':attribute can Not be more than 2 KB',
+            'status.in' => 'values that allowed are: active and archived',
+        ]);
+
+        // dd($validated_data);  // no description (just the validated data - write description in the rules)
+
         $request->merge([
             'slug' => Str::slug($request->post('name'))
         ]);
@@ -60,6 +68,8 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
+        $request->validate(Category::rules($category->id));
+
         $old_image = $category->image;
         $data = $request->except('_token', '_method', 'image');
 
@@ -74,7 +84,7 @@ class CategoryController extends Controller
 
         // after updating the category, we can delete the old image from the storage file
         // if($old_image && isset($data['image'])) {
-        if($old_image && $data['image']) {
+        if($old_image && isset($data['image'])) {
             // Storage::delete($old_image);
             // Storage Facade deals with local disk by default - you need to specify the disk
 
