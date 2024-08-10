@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Rules\Filter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rule;
@@ -34,6 +35,7 @@ class Category extends Model
                 //         $fails("you can't use $value as a $attribute");
                 //     }
                 // }
+                new Filter(['admin', 'administrator', 'manager']),
             ],
             'parent_id' => 'nullable|int|exists:categories,id',
             'image' => 'image|min:1|max:2028|dimensions:min_width=50,min_height=50',
