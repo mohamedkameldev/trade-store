@@ -12,5 +12,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::resource('categories', CategoryController::class);
 
+        Route::get('products', function () {
+            return 'you are in products';
+        })->name('products.index');
+
+        Route::get('orders', function () {
+            return 'you are in orders';
+        })->name('orders.index');
     });
 });

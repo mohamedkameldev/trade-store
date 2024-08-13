@@ -27,9 +27,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
 
+        {{-- @dump(Route::current()->uri)
+        @dump(Route::currentRouteName())
+        @dd(Route::currentRouteAction()) --}}
+
         @include('layouts.partials.nav')
 
-        @include('layouts.partials.sidebar')
+        {{-- @include('layouts.partials.sidebar') --}}
+        <x-sidebar />
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
