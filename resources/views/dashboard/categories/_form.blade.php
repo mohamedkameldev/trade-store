@@ -9,23 +9,7 @@ so, we put the _ before it's name --}}
 
     <x-form.select lable="Category Parent" name="parent_id" :value="$category->parent_id" :parents="$parents" />
 
-    <div class="form-group">
-        <div class="d-flex image-label-container">
-            <label for="image">Image</label>
-            @if ($category->image)
-            <img class="ml-4 mb-2" src="{{asset('storage/' . $category->image)}}" alt="image" width="100" height="auto">
-            @endif
-        </div>
-        <div class="custom-file">
-            <input type="file" @class(['custom-file-input', 'is-invalid'=> $errors->has('image') ])
-            name="image" id="image" accept="image/*">
-            <label class="custom-file-label" for="image"> {{old('image', $category->image) ?? 'Choose file' }}
-            </label>
-            @error('image')
-            <div class="invalid-feedback"> {{ $message }} </div>
-            @enderror
-        </div>
-    </div>
+    <x-form.image lable="Image" name="image" :image="$category->image" />
 
     <div class="form-group">
         <label for="parent">Status</label>
