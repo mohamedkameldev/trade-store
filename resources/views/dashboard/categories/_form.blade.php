@@ -11,7 +11,7 @@ so, we put the _ before it's name --}}
 
     <x-form.image label="Image" name="image" :image="$category->image" />
 
-    <x-form.status label="Status" name="status" :status="$category->status" :values="['active', 'archived']" />
+    <x-form.radio label="Status" name="status" :status="$category->status" :values="['active', 'archived']" />
 
-    <x-form.button :buttonlabel="$button_label ?? 'Save'" />
+    <x-form.submit-button :buttonlabel="$button_label ?? 'Save'" />
 </div>
