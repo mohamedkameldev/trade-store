@@ -2,28 +2,12 @@
 so, we put the _ before it's name --}}
 
 <div>
-    <div class="form-group">
-        <x-form.input lable="Category Name" name="name" :value="$category->name" />
-    </div>
 
+    <x-form.input lable="Category Name" name="name" :value="$category->name" />
 
-    <div class="form-group">
-        <x-form.textarea lable="Description" name="description" :value="$category->description" />
-    </div>
+    <x-form.textarea lable="Description" name="description" :value="$category->description" />
 
-    <div class="form-group">
-        <label for="parent">Category Parent</label>
-        <select name="parent_id" @class(['form-control', 'is-invalid'=> $errors->has('parent_id') ])>
-            <option {{ old('parent_id', $category->parent_id ) ?? 'selected' }} value="">Primary Category</option>
-            @foreach ($parents as $parent)
-            <option value="{{$parent->id}}" @selected(old('parent_id', $category->parent_id ) == $parent->id)>
-                {{$parent->name}} </option>
-            @endforeach
-        </select>
-        @error('parent_id')
-        <div class="invalid-feedback"> {{ $message }} </div>
-        @enderror
-    </div>
+    <x-form.select lable="Category Parent" name="parent_id" :value="$category->parent_id" :parents="$parents" />
 
     <div class="form-group">
         <div class="d-flex image-label-container">
@@ -35,7 +19,8 @@ so, we put the _ before it's name --}}
         <div class="custom-file">
             <input type="file" @class(['custom-file-input', 'is-invalid'=> $errors->has('image') ])
             name="image" id="image" accept="image/*">
-            <label class="custom-file-label" for="image"> {{old('image', $category->image) ?? 'Choose file' }} </label>
+            <label class="custom-file-label" for="image"> {{old('image', $category->image) ?? 'Choose file' }}
+            </label>
             @error('image')
             <div class="invalid-feedback"> {{ $message }} </div>
             @enderror
@@ -47,7 +32,8 @@ so, we put the _ before it's name --}}
         <div class="form-check">
             <div class="custom-control custom-radio custom-control-inline">
                 <input type="radio" id="active" name="status" value=" active"
-                    @class(['custom-control-input', 'is-invalid'=> $errors->has('status') ])
+                    @class(['custom-control-input', 'is-invalid'=>
+                $errors->has('status') ])
                 @checked(old('status', $category->status) == 'active' ) >
                 <label class="custom-control-label" for="active">Active</label>
             </div>
