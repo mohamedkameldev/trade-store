@@ -3,19 +3,14 @@ so, we put the _ before it's name --}}
 
 <div>
     <div class="form-group">
-        <label for="name">Category Name</label>
-        <input type="text" @class(['form-control', 'is-invalid'=> $errors->has('name')])
-        name="name" value="{{ old('name', $category->name )}}" id="name">
-        @error('name')
-        <div class="invalid-feedback"> {{$message}} </div>
-        @enderror
+        <x-form.input lable="Category Name" name="name" :value="$category->name" />
     </div>
 
 
     <div class="form-group">
         <label for="description">Description</label>
-        <textarea name="description" @class(['form-control', 'is-invalid'=> $errors->has('description') ]) id="description" rows="2">{{ old('description', $category->description )}}
-        </textarea>
+        <textarea name="description"
+            @class(['form-control', 'is-invalid'=> $errors->has('description') ]) id="description" rows="2">{{ old('description', $category->description )}}</textarea>
         @error('description')
         <div class="invalid-feedback"> {{ $message }} </div>
         @enderror
