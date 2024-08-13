@@ -8,12 +8,7 @@ so, we put the _ before it's name --}}
 
 
     <div class="form-group">
-        <label for="description">Description</label>
-        <textarea name="description"
-            @class(['form-control', 'is-invalid'=> $errors->has('description') ]) id="description" rows="2">{{ old('description', $category->description )}}</textarea>
-        @error('description')
-        <div class="invalid-feedback"> {{ $message }} </div>
-        @enderror
+        <x-form.textarea lable="Description" name="description" :value="$category->description" />
     </div>
 
     <div class="form-group">
