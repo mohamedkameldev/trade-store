@@ -1,12 +1,10 @@
 @props([
-'lable' => false, 'status' => '', 'name', 'values'
+'label' => false, 'status' => '', 'name', 'values'
 ])
 
 <div class="form-group">
 
-    @if ($lable)
-    <label for="parent">{{ $lable }}</label>
-    @endif
+    <x-form.label> {{ $label }} </x-form.label>
 
     <div class="form-check">
 

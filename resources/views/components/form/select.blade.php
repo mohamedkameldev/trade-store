@@ -1,14 +1,13 @@
 @props([
-'lable' => false, 'name', 'value' => '', 'parents'
+'label' => false, 'name', 'value' => '', 'parents'
 ])
 
 <div class="form-group">
 
-    @if ($lable)
-    <label for="{{ $name }}">{{ $lable }}</label>
-    @endif
+    <x-form.label :name="$name"> {{ $label }} </x-form.label>
 
-    <select name="{{ $name }}" {{ $attributes->class(['form-control', 'is-invalid'=> $errors->has($name) ]) }}>
+    <select name="{{$name}}" id="{{$name}}" {{ $attributes->class(['form-control', 'is-invalid'=>
+        $errors->has($name)])}}>
         <option {{ old($name , $value ) ?? 'selected' }} value="">Primary Category</option>
         @foreach ($parents as $parent)
         <option value="{{$parent->id}}" @selected(old($name , $value)==$parent->id)>
