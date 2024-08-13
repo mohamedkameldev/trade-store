@@ -1,5 +1,5 @@
 @props([
-'lable' => false, 'name', 'image'
+'lable' => false, 'name', 'image' => null
 ])
 
 
