@@ -13,7 +13,5 @@ so, we put the _ before it's name --}}
 
     <x-form.status lable="Status" name="status" :status="$category->status" :values="['active', 'archived']" />
 
-    <div class="form-group btn-lg btn-block" style="display: flex; justify-content: flex-end;">
-        <button type="submit" class="btn btn-primary">{{ $button_label ?? 'Save' }}</button>
-    </div>
+    <x-form.button :buttonlabel="$button_label ?? 'Save'" />
 </div>
