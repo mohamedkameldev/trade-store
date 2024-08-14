@@ -28,7 +28,7 @@ class Category extends Model
             // 'name' => "required|string|min:3|max:255|unique:categories,name,$id", // max 255 because it is a varchar
             'name' => [
                 'required', 'string', 'min:3', 'max:255',
-                // Rule::unique('categories', 'name')->ignore($id),
+                Rule::unique('categories', 'name')->ignore($id),
                 // function ($attribute, $value, $fails) {
                 //     // $attribute: attribute name.
                 //     // $value: value that user will enter it.

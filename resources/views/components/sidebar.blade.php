@@ -47,7 +47,7 @@
                     {{-- {{$active ? 'active' : 'not active'}} --}}
                     <a href="{{ route($item['route_name']) }}" @class(['nav-link', 'active'=> $active])>
                         <i class="fa {{ $item['icon_class'] }}"></i>
-                        <p>
+                        <p class="ml-2">
                             {{ $item['title'] }}
                             @if ($item['batch'])
                             <span class="right badge badge-danger">{{ $item['batch'] }}</span>

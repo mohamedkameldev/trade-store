@@ -29,7 +29,7 @@ class CategoryFactory extends Factory
     protected function generateParentId($attempts)
     {
         $id = null;
-        $lastCategoryId = DB::table('categories')->latest()->first()->id;
+        $lastCategoryId = DB::table('categories')->orderByDesc('id')->first()->id;
 
         while ($attempts != 0) {
             $id = fake()->numberBetween(1, $lastCategoryId);
@@ -37,7 +37,6 @@ class CategoryFactory extends Factory
             if(DB::table('categories')->where('id', $id)->exists()) {
                 return $id;
             }
-
             $attempts--;
         }
         return null;
