@@ -13,7 +13,8 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        // $categories = Category::simplePaginate(2); // simple view (by default 15)
+        $categories = Category::paginate(5); // by default returns 15
         return view('dashboard.categories.index', compact('categories'));
     }
 
@@ -34,9 +35,9 @@ class CategoryController extends Controller
 
         // dd($validated_data);  // no description (just the validated data - write description in the rules)
 
-        $request->merge([
-            'slug' => Str::slug($request->post('name'))
-        ]);
+        // $request->merge([
+        //     'slug' => Str::slug($request->post('name'))
+        // ]);
 
         $data = $request->except('_token', 'image');
 
