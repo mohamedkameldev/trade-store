@@ -96,7 +96,11 @@ section--}}
     </tbody>
 </table>
 
-<div style="display: flex; justify-content: flex-end;">
-    {{ $categories->withQueryString()->links() }}
-</div>
+{{ $categories->withQueryString()->links() }}
+
+{{-- to use a custom pagination file only in this page --}}
+{{-- {{ $categories->withQueryString()->links('pagination.custom') }} --}}
+
+{{-- to send query strings while moving forward into pages --}}
+{{-- {{ $categories->withQueryString()->appends(['on_tap' => 'click'])->links() }} --}}
 @endsection
