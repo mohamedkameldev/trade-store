@@ -5,16 +5,29 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
     public function index()
     {
-        // $categories = Category::simplePaginate(2); // simple view (by default 15)
-        $categories = Category::paginate(5); // by default returns 15
+        $query = Category::query();
+
+        if($name = request()->query('name')) {
+            $query->where(function ($q) use ($name) {
+                $q->where('name', 'LIKE', "%$name%")
+                ->orWhere('description', 'LIKE', "%$name%");
+            });
+        }
+        if($status = request()->query('status')) {
+            // $query->where('status', $status);
+            $query->whereStatus($status);
+        }
+        // $query->dd();
+        $categories = $query->paginate(5);
+
         return view('dashboard.categories.index', compact('categories'));
     }
 

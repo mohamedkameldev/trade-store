@@ -19,6 +19,19 @@ section--}}
 
 <x-alert />
 
+<div class="container-fluid d-flex justify-content-center align-items-center mb-4">
+    <form class="form-inline" action="{{ URL::current() }}" method="GET">
+        <input type="text" class="form-control mr-sm-2" name="name" value="{{ request()->query('name') }}"
+            placeholder="Name">
+        <select class="form-control mr-sm-2" name="status">
+            <option value="">All</option>
+            <option value="active" @selected(request()->query('status') == 'active')> Active </option>
+            <option value="archived" @selected(request()->query('status') == 'archived')> Archived </option>
+        </select>
+        <button type="submit" class="btn btn-primary"> Search </button>
+    </form>
+</div>
+
 <table class="table table-bordered" style=" text-align: center; background-color: white">
     <thead>
         <tr>
@@ -36,10 +49,10 @@ section--}}
         @forelse ($categories as $category)
         <tr>
             <td>
-                @if(is_null($category->image))
-                <img src="{{asset('dist\img\placeholder.png')}}" alt="image" width="100" height="auto">
-                @else
+                @if($category->image)
                 <img src="{{asset('storage/' . $category->image)}}" alt="image" width="100" height="auto">
+                @else
+                <img src="{{asset('dist\img\placeholder.png')}}" alt="image" width="100" height="auto">
                 @endif
 
             </td>
@@ -82,4 +95,8 @@ section--}}
 
     </tbody>
 </table>
+
+<div style="display: flex; justify-content: flex-end;">
+    {{ $categories->withQueryString()->links() }}
+</div>
 @endsection
