@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Rules\Filter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +22,42 @@ class Category extends Model
         'image',
         'status',
     ];
+
+    public function scopeActive(Builder $builder)
+    {
+        $builder->where('status', '=', 'active');
+    }
+
+    public function scopeStatus(Builder $builder, $status)
+    {
+        $builder->where('status', $status);
+    }
+
+    public function scopeFilter(Builder $builder, $filters)
+    {
+        // if($filters['name'] ?? false) {
+        //     $builder->where(function ($q) use ($filters) {
+        //         $q->where('name', 'LIKE', "%{$filters['name']}%")
+        //         ->orWhere('description', 'LIKE', "%{$filters['name']}%");
+        //     });
+        // }
+        // if($filters['status'] ?? false) {
+        //     // $query->where('status', $status);
+        //     $builder->whereStatus($filters['status']);
+        // }
+
+        $builder->when($filters['name'] ?? false, function ($builder, $value) {
+            $builder->where(function ($q) use ($value) {
+                $q->where('name', 'LIKE', "%{$value}%")
+                ->orWhere('description', 'LIKE', "%{$value}%");
+            });
+        });
+
+        $builder->when($filters['status'] ?? false, function ($builder, $value) {
+            $builder->whereStatus($value);
+        });
+    }
+
 
     public static function rules($id = null)
     {

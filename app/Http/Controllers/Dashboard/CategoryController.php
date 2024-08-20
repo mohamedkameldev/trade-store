@@ -13,20 +13,13 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $query = Category::query();
+        // using local scope:
+        // $categories = Category::active()->paginate();
+        // $categories = Category::status('archived')->paginate();
+        // $categories = Category::status('archived')->active()->dd();
 
-        if($name = request()->query('name')) {
-            $query->where(function ($q) use ($name) {
-                $q->where('name', 'LIKE', "%$name%")
-                ->orWhere('description', 'LIKE', "%$name%");
-            });
-        }
-        if($status = request()->query('status')) {
-            // $query->where('status', $status);
-            $query->whereStatus($status);
-        }
-        // $query->dd();
-        $categories = $query->paginate(5);
+        // $categories = Category::filter(['name' => request()->name, 'status' => request()->status ])->dd();
+        $categories = Category::filter(request()->query())->paginate(8);
 
         return view('dashboard.categories.index', compact('categories'));
     }
@@ -56,10 +49,11 @@ class CategoryController extends Controller
 
         if($request->hasFile('image')) {
             $file = $request->file('image'); // UploadedFile Object
+            // dd($file);
             $path = $this->upload($file);
             $data['image'] = $path;
         }
-
+        dd($data);
         Category::create($data);
 
         return redirect()->route('dashboard.categories.index')->with('created', 'Category has been created successfully !!');
