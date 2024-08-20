@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
  */
 class CategoryFactory extends Factory
 {
+    protected static $counter = 0;
     /**
      * Define the model's default state.
      *
@@ -21,7 +22,7 @@ class CategoryFactory extends Factory
             'name' => fake()->unique()->word(),
             'description' => fake()->sentence(15),
             'parent_id' => $this->generateParentId(1),
-            'image' => $this->fakeImage(),
+            'image' => $this->staticImages(CategoryFactory::$counter),
             'status' => fake()->randomElement(['active', 'archived']),
         ];
     }
@@ -42,6 +43,7 @@ class CategoryFactory extends Factory
         return null;
     }
 
+    // proper method - faker package has a problem with it
     protected function fakeImage()
     {
         $image = fake()->image(
@@ -55,5 +57,14 @@ class CategoryFactory extends Factory
             // $format = 'png'
         );
         return "uploads/". $image;
+    }
+
+    protected function staticImages(&$counter)
+    {
+        $counter++;
+        if(strlen($counter) == 1) {
+            return "uploads/0" . $counter . '.png';
+        }
+        return "uploads/" . $counter . '.png';
     }
 }
