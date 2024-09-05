@@ -11,7 +11,8 @@ section--}}
 
 
 @section('button')
-<a href="{{ route('dashboard.categories.create') }}" class="btn btn-small btn-primary">New Category</a>
+<a href="{{ route('dashboard.categories.create') }}" class="btn btn-small btn-outline-primary mr-2">New Category</a>
+<a href="{{ route('dashboard.categories.trash') }}" class="btn btn-small btn-outline-danger">Trash</a>
 @endsection
 
 
@@ -19,18 +20,7 @@ section--}}
 
 <x-alert />
 
-<div class="container-fluid d-flex justify-content-center align-items-center mb-4">
-    <form class="form-inline" action="{{ URL::current() }}" method="GET">
-        <input type="text" class="form-control mr-sm-2" name="name" value="{{ request()->query('name') }}"
-            placeholder="Name">
-        <select class="form-control mr-sm-2" name="status">
-            <option value="">All</option>
-            <option value="active" @selected(request()->query('status') == 'active')> Active </option>
-            <option value="archived" @selected(request()->query('status') == 'archived')> Archived </option>
-        </select>
-        <button type="submit" class="btn btn-primary"> Search </button>
-    </form>
-</div>
+@include('dashboard.categories._search-form')
 
 <table class="table table-bordered" style=" text-align: center; background-color: white">
     <thead>
@@ -74,7 +64,7 @@ section--}}
             <td>
                 <a href="{{ route('dashboard.categories.edit', $category->id) }}"
                     class="btn btn-small btn-warning mr-2">Edit</a>
-                <form action="{{ route('dashboard.categories.destroy', $category->id) }} }}" method="post"
+                <form action="{{ route('dashboard.categories.destroy', $category->id) }}" method="post"
                     style="display:inline">
                     @csrf
                     @method('delete')
