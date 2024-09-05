@@ -11,6 +11,30 @@ use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
+    protected function upload($file)
+    {
+        // dump($file->getSize());
+        // dump($file->getFileInfo());
+        // dump($file->getFilename());     // the current name in the temp folder
+        // dump($file->getClientOriginalName());
+        // dump($file->getClientOriginalExtension());
+        // dump($file->getMimeType());
+        // dd($file);
+
+        // $path = $file->store('uploads'); // .env disk
+        // $path = $file->store('uploads', 'local'); // local disk (storage/app)
+        // $path = $file->store('uploads', 'public'); // public disk (storeag/app/public)
+        // $path = $file->store('uploads', [
+        //     'disk' => 'public'
+        // ]);
+        // store function make a random name for the file
+
+        $file_name = now()->timestamp . '_' . $file->getClientOriginalName();
+        $path = $file->storeAs('uploads', $file_name, 'public');
+
+        return $path;
+    }
+
     public function index()
     {
         // using local scope:
@@ -20,6 +44,10 @@ class CategoryController extends Controller
 
         // $categories = Category::filter(['name' => request()->name, 'status' => request()->status ])->dd();
         $categories = Category::filter(request()->query())->paginate(8);
+
+        // by default: Global Scopes will put a condition (where `deleted_at` is_null)
+        // ->withTrashed(): forcing laravel to retrive the deleted item.
+        // ->onlyTrashed(): forcing laravel to retrive only the deleted items.
 
         return view('dashboard.categories.index', compact('categories'));
     }
@@ -47,7 +75,7 @@ class CategoryController extends Controller
 
         $data = $request->except('_token', 'image');
 
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             $file = $request->file('image'); // UploadedFile Object
             // dd($file);
             $path = $this->upload($file);
@@ -81,7 +109,7 @@ class CategoryController extends Controller
         $old_image = $category->image;
         $data = $request->except('_token', '_method', 'image');
 
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             $file = $request->file('image');
             $path = $this->upload($file);
             $data['image'] = $path;
@@ -92,7 +120,7 @@ class CategoryController extends Controller
 
         // after updating the category, we can delete the old image from the storage file
         // if($old_image && isset($data['image'])) {
-        if($old_image && isset($data['image'])) {
+        if ($old_image && isset($data['image'])) {
             // Storage::delete($old_image);
             // Storage Facade deals with local disk by default - you need to specify the disk
 
@@ -105,41 +133,14 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         $category = Category::findOrFail($id);
-        $deleted = $category->delete();                             // 2 queries on the DB
+        $category->delete();                             // 2 queries on the DB
 
         // Category::where('id', '=', (int)$id)->delete();          // 1 query on the DB
         // $deleted = Category::where('id', (int)$id)->delete();
 
         // Category::destroy($id);    // shourtcut for the previous one (find and delete in a single querey)
 
-        if($deleted && $category->image) {
-            Storage::disk('public')->delete($category->image);
-        }
-
         return back()->with('deleted', 'category has been deleted successfully !!');
     }
 
-    protected function upload($file)
-    {
-        // dump($file->getSize());
-        // dump($file->getFileInfo());
-        // dump($file->getFilename());     // the current name in the temp folder
-        // dump($file->getClientOriginalName());
-        // dump($file->getClientOriginalExtension());
-        // dump($file->getMimeType());
-        // dd($file);
-
-        // $path = $file->store('uploads'); // .env disk
-        // $path = $file->store('uploads', 'local'); // local disk (storage/app)
-        // $path = $file->store('uploads', 'public'); // public disk (storeag/app/public)
-        // $path = $file->store('uploads', [
-        //     'disk' => 'public'
-        // ]);
-        // store function make a random name for the file
-
-        $file_name = now()->timestamp . '_' . $file->getClientOriginalName();
-        $path = $file->storeAs('uploads', $file_name, 'public');
-
-        return $path;
-    }
 }
