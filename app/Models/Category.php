@@ -6,6 +6,7 @@ use App\Rules\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
@@ -13,6 +14,7 @@ use Illuminate\Support\Str;
 class Category extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -104,7 +106,7 @@ class Category extends Model
     protected static function createUniqueSlug($table, $name)
     {
         $items = DB::table($table)->where('name', $name)->get();
-        if($items->isNotEmpty()) {
+        if ($items->isNotEmpty()) {
             $counter = 1;
             foreach ($items as $item) {
                 $counter++;

@@ -15,3 +15,15 @@
     {{ session('deleted') }}
 </div>
 @endsession
+
+@session('restored')
+<div class="alert alert-secondary" role="alert" style=" text-align: center">
+    {{ session('restored') }}
+</div>
+@endsession
+
+@session('forced')
+<div class="alert alert-danger" role="alert" style=" text-align: center">
+    {{ session('forced') }}
+</div>
+@endsession

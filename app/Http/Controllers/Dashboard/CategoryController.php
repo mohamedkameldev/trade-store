@@ -143,4 +143,32 @@ class CategoryController extends Controller
         return back()->with('deleted', 'category has been deleted successfully !!');
     }
 
+    ##---------------------------------- Soft Delete methods
+    public function trash()
+    {
+        $trashedCategories = Category::filter(request()->query())->onlyTrashed()->get();
+
+        return view('dashboard.categories.trash', compact('trashedCategories'));
+    }
+
+    public function restore($id)
+    {
+        $category = Category::onlyTrashed()->findOrFail($id);
+        $category->restore();
+
+        return to_route('dashboard.categories.trash')->with('restored', 'category has been restored successfully');
+    }
+
+    public function forceDelete($id)
+    {
+        $category = Category::onlyTrashed()->findOrFail($id);
+        $deleted = $category->forceDelete();
+
+        if ($deleted && $category->image) {
+            Storage::disk('public')->delete($category->image);
+        }
+
+
+        return to_route('dashboard.categories.trash')->with('forced', 'category has been permenantly deleted');
+    }
 }
