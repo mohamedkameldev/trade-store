@@ -27,8 +27,10 @@ class ProductFactory extends Factory
             'name' => $name,
             'description' => $this->faker->sentences(2, true), // 2 sentences as a text not an array
             'image' => $this->faker->imageUrl(word: "$name-product"),
+            'price' => $price,
             'compare_price' => ($price + $this->faker->randomNumber(2)),
             'featured' => rand(0, 1),
+            'status' => Arr::random(['active', 'draft', 'archived']),
         ];
     }
 }

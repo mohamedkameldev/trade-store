@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         #------------- Seeding directrly from the Factory
-        // Store::factory(10)->create();
-        Product::factory(100)->create();
+        Store::factory(5)->create();
+        // Product::factory(25)->create();
     }
 }
