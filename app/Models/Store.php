@@ -9,4 +9,12 @@ class Store extends Model
 {
     use HasFactory;
 
+    public static function boot()
+    {
+        parent::boot();
+        static::saving(function ($store) {
+            $store->slug = createUniqueSlug('stores', $store->name);
+        });
+    }
+
 }
