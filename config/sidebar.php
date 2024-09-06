@@ -16,10 +16,10 @@ return [
         'batch' => '',
     ],
     [
-        'title' => 'Orders',
-        'route_name' => 'dashboard.orders.index',
-        'route_prefix' => 'dashboard.orders',
-        'icon_class' => 'fa-truck',
+        'title' => 'Stores',
+        'route_name' => 'dashboard.stores.index',
+        'route_prefix' => 'dashboard.stores',
+        'icon_class' => 'fa-store',
         'batch' => 'New',
     ],
 ];
