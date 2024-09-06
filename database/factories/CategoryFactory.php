@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\DB;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
@@ -21,26 +21,11 @@ class CategoryFactory extends Factory
         return [
             'name' => fake()->unique()->word(),
             'description' => fake()->sentence(15),
-            'parent_id' => $this->generateParentId(1),
+            // 'parent_id' => generateParentId('categories', 1),
+            'parent_id' => Category::inRandomOrder()->first()->id,
             'image' => $this->staticImages(CategoryFactory::$counter),
             'status' => fake()->randomElement(['active', 'archived']),
         ];
-    }
-
-    protected function generateParentId($attempts)
-    {
-        $id = null;
-        $lastCategoryId = DB::table('categories')->orderByDesc('id')->first()->id;
-
-        while ($attempts != 0) {
-            $id = fake()->numberBetween(1, $lastCategoryId);
-
-            if(DB::table('categories')->where('id', $id)->exists()) {
-                return $id;
-            }
-            $attempts--;
-        }
-        return null;
     }
 
     // proper method - faker package has a problem with it
@@ -62,7 +47,7 @@ class CategoryFactory extends Factory
     protected function staticImages(&$counter)
     {
         $counter++;
-        if(strlen($counter) == 1) {
+        if (strlen($counter) == 1) {
             return "uploads/0" . $counter . '.png';
         }
         return "uploads/" . $counter . '.png';

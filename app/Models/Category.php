@@ -99,21 +99,7 @@ class Category extends Model
     {
         parent::boot();
         static::saving(function ($category) {
-            $category->slug = static::createUniqueSlug('categories', $category->name);
+            $category->slug = createUniqueSlug('categories', $category->name);
         });
     }
-
-    protected static function createUniqueSlug($table, $name)
-    {
-        $items = DB::table($table)->where('name', $name)->get();
-        if ($items->isNotEmpty()) {
-            $counter = 1;
-            foreach ($items as $item) {
-                $counter++;
-            }
-            return Str::slug($name).'-'.$counter;
-        }
-        return Str::slug($name);
-    }
-
 }
