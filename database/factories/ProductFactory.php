@@ -11,6 +11,7 @@ use Illuminate\Support\Arr;
  */
 class ProductFactory extends Factory
 {
+    protected static $counter = 0;
     /**
      * Define the model's default state.
      *
@@ -19,14 +20,17 @@ class ProductFactory extends Factory
 
     public function definition(): array
     {
-        $name = $this->faker->words(2, true);  // return 2 words as a string not an array
+        // $name = $this->faker->words(2, true);  // return 2 words as a string not an array
+        // $name = $this->faker->productName;
+        $name = fake()->productName;
         $price = $this->faker->randomFloat(2, 1, 500);
         return [
             'store_id' => Store::inRandomOrder()->first()->id,
             'category_id' => generateParentId('categories', 10),
             'name' => $name,
             'description' => $this->faker->sentences(2, true), // 2 sentences as a text not an array
-            'image' => $this->faker->imageUrl(word: "$name-product"),
+            // 'image' => $this->faker->imageUrl(word: "$name-product"),
+            'image' => staticImages(ProductFactory::$counter),
             'price' => $price,
             'compare_price' => ($price + $this->faker->randomNumber(2)),
             'featured' => rand(0, 1),

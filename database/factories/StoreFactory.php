@@ -10,6 +10,8 @@ use Illuminate\Support\Arr;
  */
 class StoreFactory extends Factory
 {
+    protected static $image_counter = 0;
+    protected static $cover_counter = 0;
     /**
      * Define the model's default state.
      *
@@ -18,10 +20,12 @@ class StoreFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word(),
+            // 'name' => $this->faker->word(),
+            'name' => fake()->department,
             'description' => $this->faker->sentence(15, true), // random number from 1 to 15
-            'logo_image' => $this->faker->imageUrl(300, 300, category: 'store'),
-            'cover_image' => $this->faker->imageUrl(),
+            // 'logo_image' => $this->faker->imageUrl(300, 300, category: 'store'),
+            'logo_image' => staticImages(StoreFactory::$image_counter),
+            'cover_image' => staticImages(StoreFactory::$cover_counter),
             'status' => Arr::random(['active', 'inactive']),
         ];
     }

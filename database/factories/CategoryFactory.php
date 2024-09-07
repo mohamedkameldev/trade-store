@@ -19,16 +19,16 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->unique()->word(),
-            'description' => fake()->sentence(15),
+            'name' => fake()->unique()->category,
+            'description' => fake()->sentence(10),
             // 'parent_id' => generateParentId('categories', 1),
             'parent_id' => Category::inRandomOrder()->first()->id,
-            'image' => $this->staticImages(CategoryFactory::$counter),
+            'image' => staticImages(CategoryFactory::$counter),
             'status' => fake()->randomElement(['active', 'archived']),
         ];
     }
 
-    // proper method - faker package has a problem with it
+    // old function to create and store images, then return it's relative path of it
     protected function fakeImage()
     {
         $image = fake()->image(
@@ -42,14 +42,5 @@ class CategoryFactory extends Factory
             // $format = 'png'
         );
         return "uploads/". $image;
-    }
-
-    protected function staticImages(&$counter)
-    {
-        $counter++;
-        if (strlen($counter) == 1) {
-            return "uploads/0" . $counter . '.png';
-        }
-        return "uploads/" . $counter . '.png';
     }
 }
