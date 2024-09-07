@@ -109,6 +109,9 @@ return [
     */
 
     'faker_locale' => 'en_US',
+    #-- Arabic isn't available with all methods, it's available with name()
+    // 'faker_locale' => 'ar_SA',
+    // 'faker_locale' => 'ar_EG',
 
     /*
     |--------------------------------------------------------------------------
