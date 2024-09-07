@@ -41,7 +41,7 @@ section--}}
         <tr>
             <td>
                 @if($product->image)
-                <img src="{{$product->image}}" alt="image" width="100" height="auto">
+                <img src="{{asset('storage/' . $product->image)}}" alt="image" width="100" height="auto">
                 @else
                 <img src="{{asset('dist\img\placeholder.png')}}" alt="image" width="100" height="auto">
                 @endif

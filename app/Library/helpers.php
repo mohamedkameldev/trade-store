@@ -31,3 +31,12 @@ function generateParentId($table, $attempts)
     }
     return null;
 }
+
+function staticImages(&$counter)
+{
+    $counter++;
+    if (strlen($counter) == 1) {
+        return "uploads/0" . $counter . '.png';
+    }
+    return "uploads/" . $counter . '.png';
+}

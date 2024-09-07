@@ -43,7 +43,7 @@ class CategoryController extends Controller
         // $categories = Category::status('archived')->active()->dd();
 
         // $categories = Category::filter(['name' => request()->name, 'status' => request()->status ])->dd();
-        $categories = Category::filter(request()->query())->paginate(8);
+        $categories = Category::filter(request()->query())->paginate(5);
 
         // by default: Global Scopes will put a condition (where `deleted_at` is_null)
         // ->withTrashed(): forcing laravel to retrive the deleted item.

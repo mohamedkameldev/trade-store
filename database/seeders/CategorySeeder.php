@@ -68,7 +68,7 @@ class CategorySeeder extends Seeder
             Category::create($category);
         }
 
-        Category::factory()->count(14)->create();
-        // Category::factory(26)->create();
+        Category::factory()->count(4)->create();
+        // Category::factory(4)->create();
     }
 }
