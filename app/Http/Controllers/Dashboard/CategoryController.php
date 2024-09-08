@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -43,8 +41,16 @@ class CategoryController extends Controller
         // $categories = Category::status('archived')->active()->dd();
 
         // $categories = Category::filter(['name' => request()->name, 'status' => request()->status ])->dd();
-        $categories = Category::filter(request()->query())->paginate(5);
-
+        $categories = Category::with('parent')                          // eager loading
+                                // ->withCount(['children', 'products'])   // not an eager loading - we don't fetch the relation data
+                                // ->withCount(['children as number_of_children', 'products'])   // to change the default name
+                                ->withCount([
+                                    'children as number_of_children' => function ($query) {
+                                        $query->where('status', 'active');
+                                    }
+                                    ])
+                                ->filter(request()->query())
+                                ->paginate(5);
         // by default: Global Scopes will put a condition (where `deleted_at` is_null)
         // ->withTrashed(): forcing laravel to retrive the deleted item.
         // ->onlyTrashed(): forcing laravel to retrive only the deleted items.

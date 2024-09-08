@@ -29,6 +29,7 @@ section--}}
             <th>Name</th>
             <th>Discription</th>
             <th>Parent</th>
+            <th>Num children</th>
             <th>Status</th>
             <th>Created at</th>
             <th colspan="2">Actions</th>
@@ -47,11 +48,11 @@ section--}}
 
             </td>
             <td>{{ $category->name }}</td>
-            <td>{{ Str::substrReplace($category->description, '....', 25) }}</td>
-            <td>{{ !is_null($category->parent_id)
-                ? DB::table('categories')->where('id', $category->parent_id)->first()->name
-                : '' }}
-            </td>
+            <td>{{ Str::substrReplace($category->description, '....', 25) }} </td>
+            {{-- <td>{{ $category->parent->name ?? '-' }} --}} </td>
+            <td>{{ $category->parent->name }} </td>
+            {{-- <td>{{ $category->children ? $category->children->count() : 0 }} </td> --}}
+            <td>{{ $category->number_of_children }} </td>
             <td>
                 @if ($category->status == 'active')
                 <p class="text-success"> Active </p>
@@ -74,7 +75,7 @@ section--}}
         </tr>
         @empty
         <tr>
-            <td colspan="8">
+            <td colspan="9">
                 <div class="alert alert-secondary" role="alert">
                     There are no Categories yet, <a href="{{ route('dashboard.categories.create') }}">Add a new
                         Category</a>

@@ -102,4 +102,27 @@ class Category extends Model
             $category->slug = createUniqueSlug('categories', $category->name);
         });
     }
+
+    public function parent()
+    {
+        // return $this->belongsTo('App\Models\Category', 'parent_id', 'id')->withDefault();
+        return $this->belongsTo('App\Models\Category', 'parent_id', 'id')
+                    ->withDefault([ // returning a default values for the null models
+                        'name' => '-'
+                    ]);
+        #-- with default usually used with belongsTo method,
+        #-- if the parent = null, returns this default value instead of returning null
+        #-- can't be used with hasMany because it returns a collection not just a single record
+    }
+
+    public function children()
+    {
+        return $this->hasMany('App\Models\Category', 'parent_id', 'id');
+    }
+
+    public function products()
+    {
+        return $this->hasMany('App\Models\Product', 'category_id', 'id');
+        #-- the third parameter is the local key - it can be a primary key or any other unique key
+    }
 }
