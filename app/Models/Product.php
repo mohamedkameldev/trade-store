@@ -40,4 +40,14 @@ class Product extends Model
             $product->slug = createUniqueSlug('products', $product->name);
         });
     }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Models\Category', 'category_id', 'id');
+    }
+
+    public function store()
+    {
+        return $this->belongsTo('App\Models\Store', 'store_id', 'id');
+    }
 }

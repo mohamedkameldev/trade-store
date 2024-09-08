@@ -49,11 +49,8 @@ section--}}
             </td>
             <td>{{ $product->name }}</td>
             <td>{{ Str::substrReplace($product->description, '....', 25) }}</td>
-            <td>{{ !is_null($product->category_id)
-                ? DB::table('categories')->where('id', $product->category_id)->first()->name
-                : '' }}
-            </td>
-            <td>{{DB::table('stores')->where('id', $product->store_id)->first()->name}}
+            <td>{{ $product->category->name ?? '' }}</td>
+            <td>{{ $product->store->name ?? '' }}</td>
             </td>
             <td>
                 @if ($product->status == 'active')
