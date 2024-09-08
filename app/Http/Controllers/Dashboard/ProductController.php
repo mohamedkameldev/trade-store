@@ -19,8 +19,7 @@ class ProductController extends Controller
 
         // $products = Product::active()->paginate(5);
         // $products = Product::paginate(5);   // lazy loading (works but n+1 problem)
-        $products = Product::with(['category', 'store'])->get();   // eager loading
-        dd($products);
+        $products = Product::with(['category', 'store'])->paginate(10);   // eager loading
 
         return view('dashboard.products.index', compact('products'));
     }

@@ -45,9 +45,11 @@ class CategoryController extends Controller
                                 // ->withCount(['children', 'products'])   // not an eager loading - we don't fetch the relation data
                                 // ->withCount(['children as number_of_children', 'products'])   // to change the default name
                                 ->withCount([
-                                    'children as number_of_children' => function ($query) {
-                                        $query->where('status', 'active');
-                                    }
+                                    'products',
+                                    'children as number_of_children'
+                                    // => function ($query) {
+                                    //     $query->where('status', 'active');
+                                    // }
                                     ])
                                 ->filter(request()->query())
                                 ->paginate(5);
@@ -93,9 +95,11 @@ class CategoryController extends Controller
         return redirect()->route('dashboard.categories.index')->with('created', 'Category has been created successfully !!');
     }
 
-    public function show(string $id)
+    public function show(Category $category)
     {
-        //
+        return view('dashboard.categories.show', [
+            'category' => $category
+        ]);
     }
 
     public function edit(Category $category)

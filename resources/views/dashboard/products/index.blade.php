@@ -49,8 +49,8 @@ section--}}
             </td>
             <td>{{ $product->name }}</td>
             <td>{{ Str::substrReplace($product->description, '....', 25) }}</td>
-            <td>{{ $product->category->name ?? '' }}</td>
-            <td>{{ $product->store->name ?? '' }}</td>
+            <td>{{ $product->category->name }}</td>
+            <td>{{ $product->store->name }}</td>
             </td>
             <td>
                 @if ($product->status == 'active')
@@ -63,7 +63,9 @@ section--}}
                 <p></p>
                 @endif
             </td>
-            <td>{{ $product->created_at }}</td>
+            <td>
+                {!! $product->featured ? '<div class="bg-success text-white">featured</div>' : '' !!}
+            </td>
             <td>
                 <a href="{{ route('dashboard.products.edit', $product->id) }}"
                     class="btn btn-small btn-warning mr-2">Edit</a>
