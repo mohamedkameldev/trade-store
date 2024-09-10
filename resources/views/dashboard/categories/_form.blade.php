@@ -7,7 +7,8 @@ so, we put the _ before it's name --}}
 
     <x-form.textarea label="Description" name="description" :value="$category->description" />
 
-    <x-form.select label="Category Parent" name="parent_id" :value="$category->parent_id" :parents="$parents" />
+    <x-form.select label="Category Parent" name="parent_id" default="Primary Category" :value="$category->parent_id"
+        :options="$parents" />
 
     <x-form.image label="Image" name="image" :image="$category->image" />
 

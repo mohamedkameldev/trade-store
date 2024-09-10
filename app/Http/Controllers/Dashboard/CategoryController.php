@@ -178,7 +178,6 @@ class CategoryController extends Controller
             Storage::disk('public')->delete($category->image);
         }
 
-
         return to_route('dashboard.categories.trash')->with('forced', 'category has been permenantly deleted');
     }
 }
