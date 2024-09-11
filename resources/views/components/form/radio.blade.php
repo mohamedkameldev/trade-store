@@ -13,6 +13,7 @@
             <input type="radio" id="{{ $value }}" name="{{ $name }}" value="{{ $value }}"
                 @class(['custom-control-input', 'is-invalid'=> $errors->has($name) ])
             @checked(old($name, $status) == $value ) >
+
             <label class="custom-control-label" for="{{ $value }}">{{ $value }}</label>
         </div>
         @endforeach

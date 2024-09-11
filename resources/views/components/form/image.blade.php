@@ -16,8 +16,10 @@
     <div class="custom-file">
         <input type="file" @class(['custom-file-input', 'is-invalid'=> $errors->has($name) ])
         name="{{ $name }}" id="{{ $name }}" accept="image/*">
+
         <label class="custom-file-label" for="{{ $name }}"> {{old($name, $image) ?? 'Choose file' }}
         </label>
+
         @error($name)
         <div class="invalid-feedback"> {{ $message }} </div>
         @enderror

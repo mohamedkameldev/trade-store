@@ -11,7 +11,7 @@ section--}}
 
 
 @section('button')
-<a href="{{ route('dashboard.products.create') }}" class="btn btn-small btn-outline-primary mr-2">New Category</a>
+<a href="{{ route('dashboard.products.create') }}" class="btn btn-small btn-outline-primary mr-2">New Product</a>
 {{-- <a href="{{ route('dashboard.products.trash') }}" class="btn btn-small btn-outline-danger">Trash</a> --}}
 @endsection
 
@@ -82,7 +82,7 @@ section--}}
             <td colspan="8">
                 <div class="alert alert-secondary" role="alert">
                     There are no Products yet, <a href="{{ route('dashboard.products.create') }}">Add a new
-                        Category</a>
+                        Product</a>
                 </div>
             </td>
         </tr>
