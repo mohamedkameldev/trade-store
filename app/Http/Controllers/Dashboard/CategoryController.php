@@ -9,30 +9,6 @@ use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
-    protected function upload($file)
-    {
-        // dump($file->getSize());
-        // dump($file->getFileInfo());
-        // dump($file->getFilename());     // the current name in the temp folder
-        // dump($file->getClientOriginalName());
-        // dump($file->getClientOriginalExtension());
-        // dump($file->getMimeType());
-        // dd($file);
-
-        // $path = $file->store('uploads'); // .env disk
-        // $path = $file->store('uploads', 'local'); // local disk (storage/app)
-        // $path = $file->store('uploads', 'public'); // public disk (storeag/app/public)
-        // $path = $file->store('uploads', [
-        //     'disk' => 'public'
-        // ]);
-        // store function make a random name for the file
-
-        $file_name = now()->timestamp . '_' . $file->getClientOriginalName();
-        $path = $file->storeAs('uploads', $file_name, 'public');
-
-        return $path;
-    }
-
     public function index()
     {
         // using local scope:
@@ -86,10 +62,10 @@ class CategoryController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image'); // UploadedFile Object
             // dd($file);
-            $path = $this->upload($file);
+            $path = upload($file);
             $data['image'] = $path;
         }
-        dd($data);
+        // dd($data);
         Category::create($data);
 
         return redirect()->route('dashboard.categories.index')->with('created', 'Category has been created successfully !!');
@@ -121,7 +97,7 @@ class CategoryController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $path = $this->upload($file);
+            $path = upload($file);
             $data['image'] = $path;
         }
 
