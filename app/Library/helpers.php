@@ -27,18 +27,19 @@ function upload($file)
     return $path;
 }
 
-function adding_tags($user_tags)
+function adding_tags($request_tags)
 {
+    $user_tags = json_decode($request_tags);
     $db_tags = DB::table('tags')->get();
     $tag_ids = [];
 
     foreach ($user_tags as $user_tag) {
-        $slug = Str::slug($user_tag);
+        $slug = Str::slug($user_tag->value);
         $tag = $db_tags->where('slug', $slug)->first();
 
         if (!$tag) {
             DB::table('tags')->insert([
-                'name' => $user_tag,
+                'name' => $user_tag->value,
                 'slug' => $slug
             ]);
             $tag = DB::table('tags')->where('slug', $slug)->first();

@@ -6,10 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\Tag;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -46,8 +42,8 @@ class ProductController extends Controller
         }
         $product = Product::create($data);
 
-        $user_tags = explode(',', $request->tags);
-        $tag_ids = adding_tags($user_tags);
+        // $user_tags = explode(',', $request->tags);   // old way
+        $tag_ids = adding_tags($request->tags);
 
         $product->tags()->sync($tag_ids);
         return to_route('dashboard.products.index')->with('created', 'product has been created successfully');
@@ -77,8 +73,8 @@ class ProductController extends Controller
         }
         $product->update($data);
 
-        $user_tags = explode(',', $request->tags);
-        $tag_ids = adding_tags($user_tags);
+        // $user_tags = explode(',', $request->tags);   // old way
+        $tag_ids = adding_tags($request->tags);
 
         $product->tags()->sync($tag_ids);
 
