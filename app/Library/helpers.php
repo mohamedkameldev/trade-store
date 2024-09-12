@@ -27,6 +27,27 @@ function upload($file)
     return $path;
 }
 
+function adding_tags($user_tags)
+{
+    $db_tags = DB::table('tags')->get();
+    $tag_ids = [];
+
+    foreach ($user_tags as $user_tag) {
+        $slug = Str::slug($user_tag);
+        $tag = $db_tags->where('slug', $slug)->first();
+
+        if (!$tag) {
+            DB::table('tags')->insert([
+                'name' => $user_tag,
+                'slug' => $slug
+            ]);
+            $tag = DB::table('tags')->where('slug', $slug)->first();
+        }
+        $tag_ids[] = $tag->id;
+    }
+    return $tag_ids;
+}
+
 function createUniqueSlug($table, $name)
 {
     $items = DB::table($table)->where('name', $name)->get();

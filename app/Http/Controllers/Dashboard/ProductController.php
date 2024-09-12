@@ -47,20 +47,7 @@ class ProductController extends Controller
         $product = Product::create($data);
 
         $user_tags = explode(',', $request->tags);
-        $tag_ids = [];
-
-        foreach ($user_tags as $user_tag) {
-            $slug = Str::slug($user_tag);
-            $tag = Tag::whereSlug($slug)->first();
-
-            if (!$tag) {
-                $tag = Tag::create([
-                'name' => $user_tag,
-                'slug' => $slug
-            ]);
-            }
-            $tag_ids[] = $tag->id;
-        }
+        $tag_ids = adding_tags($user_tags);
 
         $product->tags()->sync($tag_ids);
         return to_route('dashboard.products.index')->with('created', 'product has been created successfully');
@@ -91,21 +78,7 @@ class ProductController extends Controller
         $product->update($data);
 
         $user_tags = explode(',', $request->tags);
-        $db_tags = Tag::all();
-        $tag_ids = [];
-
-        foreach ($user_tags as $user_tag) {
-            $slug = Str::slug($user_tag);
-            $tag = $db_tags->where('slug', $slug)->first();
-
-            if (!$tag) {
-                $tag = Tag::create([
-                'name' => $user_tag,
-                'slug' => $slug
-            ]);
-            }
-            $tag_ids[] = $tag->id;
-        }
+        $tag_ids = adding_tags($user_tags);
 
         $product->tags()->sync($tag_ids);
 
