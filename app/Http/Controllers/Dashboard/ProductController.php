@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         // local scope: you define it and explicitly using it when you need.
@@ -24,51 +25,96 @@ class ProductController extends Controller
         return view('dashboard.products.index', compact('products'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $categories = Category::active()->get();
+        $product = new Product();
+
+        return view('dashboard.products.create', compact('categories', 'product'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+        $data = $request->except(['tags', '_token']);
+
+        $data['store_id'] = 1;
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+
+            $data['image'] = upload($file);
+        }
+        $product = Product::create($data);
+
+        $user_tags = explode(',', $request->tags);
+        $tag_ids = [];
+
+        foreach ($user_tags as $user_tag) {
+            $slug = Str::slug($user_tag);
+            $tag = Tag::whereSlug($slug)->first();
+
+            if (!$tag) {
+                $tag = Tag::create([
+                'name' => $user_tag,
+                'slug' => $slug
+            ]);
+            }
+            $tag_ids[] = $tag->id;
+        }
+
+        $product->tags()->sync($tag_ids);
+        return to_route('dashboard.products.index')->with('created', 'product has been created successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Product $product)
     {
-        //
+        $categories = Category::active()->get();
+        $tags = implode(',', $product->tags->pluck('name')->toArray());
+
+        return view('dashboard.products.edit', compact('categories', 'product', 'tags'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+        $data = $request->except(['tags', '_token']);
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+
+            $data['image'] = upload($file);
+        }
+        $product->update($data);
+
+        $user_tags = explode(',', $request->tags);
+        $db_tags = Tag::all();
+        $tag_ids = [];
+
+        foreach ($user_tags as $user_tag) {
+            $slug = Str::slug($user_tag);
+            $tag = $db_tags->where('slug', $slug)->first();
+
+            if (!$tag) {
+                $tag = Tag::create([
+                'name' => $user_tag,
+                'slug' => $slug
+            ]);
+            }
+            $tag_ids[] = $tag->id;
+        }
+
+        $product->tags()->sync($tag_ids);
+
+        return to_route('dashboard.products.index')->with('updated', 'product has been updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        Product::destroy($id);
+        return to_route('dashboard.products.index')->with('deleted', 'product has been deleted successfully');
     }
 }

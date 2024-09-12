@@ -14,6 +14,10 @@ class Product extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $fillable = [
+        'name', 'slug', 'category_id', 'store_id', 'description', 'image', 'price', 'compare_price', 'status', 'featured', 'options'
+    ];
+
     public function scopeActive(Builder $builder)
     {
         $builder->where('status', 'active');
