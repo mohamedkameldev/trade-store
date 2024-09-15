@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -18,6 +18,29 @@ class Product extends Model
         'name', 'slug', 'category_id', 'store_id', 'description', 'image', 'price', 'compare_price', 'status', 'featured', 'options'
     ];
 
+    #-- Accessors
+    public function getImagePathAttribute()
+    {
+        if (!$this->image) { // = is_null($this->image)
+            return asset('dist/img/placeholder.png');
+        } elseif (Str::startsWith($this->image, ['http://', 'https://'])) {
+            return $this->image;
+        } else {
+            return asset('storage/'. $this->image);
+        }
+    }
+
+    public function getSalePercentageAttribute()
+    {
+        if (! $this->compare_price) {
+            return null;
+        }
+        $percentage = 100 - ($this->price * 100 / $this->compare_price);
+        // return round($percentage, 1);
+        return number_format($percentage, 1);
+    }
+
+    #-- Scopes (local & global)
     public function scopeActive(Builder $builder)
     {
         $builder->where('status', 'active');
@@ -37,6 +60,7 @@ class Product extends Model
         static::addGlobalScope('store', new StoreScope());
     }
 
+    #-- Model Events
     public static function boot()
     {
         parent::boot();
@@ -45,6 +69,7 @@ class Product extends Model
         });
     }
 
+    #-- Relations
     public function category()
     {
         return $this->belongsTo('App\Models\Category', 'category_id', 'id')
