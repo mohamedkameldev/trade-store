@@ -73,6 +73,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Currency
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the default currency for your application, which
+    | will be used by the Currency helper class.
+    |
+    */
+
+    'currency' => 'USD', // currency ISO code
+    // 'currency' => 'EUR',
+    // 'currency' => 'EGP',
+    // 'currency' => 'SAR',
+    // 'currency' => 'AED',
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Locale Configuration
     |--------------------------------------------------------------------------
     |
@@ -214,6 +230,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Currency' => App\Helpers\Currency::class,
     ])->toArray(),
 
 ];
