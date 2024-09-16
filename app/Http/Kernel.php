@@ -28,6 +28,7 @@ class Kernel extends HttpKernel
         // trims whitespace from the begin and at the end of all string fields in the incoming request.
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         // if user don't fill the input
+        // \App\Http\Middleware\UpdateUserLastActiveAt::class, // cann't check who is the logged in user from here
     ];
 
     /**
@@ -51,6 +52,7 @@ class Kernel extends HttpKernel
             // Protects against CSRF attacks by verifying that all POST requests contain a valid CSRF token.
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             // route model binding, allows Laravel to automatically resolve route parameters into models
+            \App\Http\Middleware\UpdateUserLastActiveAt::class,
         ],
 
         'api' => [
