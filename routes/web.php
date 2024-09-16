@@ -14,4 +14,12 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 
+Route::get('set-cookie', function () {
+    return response('set cookie without encryption')
+            ->cookie('middlewares', 'middlewares_cookie');
+});
+Route::post('paypal/response', function () {
+    echo 'this is a web hook route, we don\'t need to protect it against CSRF attacks';
+});
+
 require __DIR__.'/auth.php';
