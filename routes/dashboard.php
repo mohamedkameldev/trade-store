@@ -4,9 +4,11 @@ use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\ProfileController;
+use App\Http\Middleware\CheckUserType;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'verified'])->group(function () {
+// Route::middleware(['auth', 'verified', CheckUserType::class])->group(function () {
+Route::middleware(['auth', 'verified', 'auth.type:super-admin,admin'])->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
